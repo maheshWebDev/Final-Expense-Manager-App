@@ -1,0 +1,101 @@
+*{
+    margin: 0;
+    padding: 0;
+  }
+  ul{
+      list-style-type:none;
+      margin:0;
+      padding:0;
+      overflow:hidden;
+      background-color:DodgerBlue;
+    }
+    li{
+      float:left;
+    }
+    li a{
+      display: block;
+      color: white;
+      text-align: centre;
+      padding: 14px 16px;
+      font-size: 20px;
+      text-decoration: none;
+    }
+    li a:hover:not(.current){
+      background-color: #152235;
+    }
+    .current{
+      background-color: DodgerBlue;
+    }
+    body{
+     background-image: linear-gradient(rgba(255, 255, 255, 0.4),rgba(251, 160, 130, 0.4)),url(expense-hd-bg.jpg);
+    }
+    .main-content{
+      width:300px;
+      padding: 50px;
+      margin:auto;
+      align-items:center;
+      color:#152235;
+      background-color:white;
+      text-align:center;
+      
+    }
+    .main-content h2{
+        margin: 20px;
+    }
+    .sub-content{
+      background-color: rgba(255,255,255,0.1)
+    }
+    
+    footer{
+      background-color: #152235;
+      color: rgb(255,221,64);
+      align-items:center;
+      text-align:center;
+      margin-top: 20px;
+      padding: 10px;
+    }
+    div{
+      align-items: center;
+      margin: auto;
+      width: auto;
+    }
+    form{
+      border:3px solid #f1f1f1;
+    }
+    input[type=email],input[type=password],input[type=text]{
+      width: 100%;
+      padding: 12px 20px;
+      margin:8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button{
+      background-color: #04AA6D;
+      color:white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width:100%;
+    }
+    button:hover{
+      opacity: 0.8;
+    }
+    span{
+      float:right;
+      padding-top: 15px;
+    }
+    h2{
+      margin-top: 5px;
+    }
+    .container{
+      padding: 10px;
+    }
+    .signupbtn{
+      width: auto;
+      padding: 10px 12px;
+      background-color: #f44336;
+    }
+   
+    
