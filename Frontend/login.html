@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title> Login Page </title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    
+    
+    <header>
+      
+    <nav>
+      <ul>
+        
+        <li><a class="current"  href="#">Login</a></li>
+        <li><a class="current" href="register.html">Register</a></li>
+     
+      </ul> 
+     </nav>
+    </header>
+     <div class="main-content">
+       <h2> Login Page </h2>
+       <form id="login">
+         <div style="text-align:left">
+           <div>
+                <label class="stylized"><b> Email:</b></label>
+           </div>
+           <div>
+             
+                 <input type="email" id="l-email" placeholder="Enter your email" required>
+           </div>
+         </div>
+         <label class="stylized"><b>Password:</b> </label><input type="password" id="l-password" placeholder="Enter password" required>
+         <button type="submit"> Login </button>
+         <input type="checkbox" checked="checked"> Remember me
+         <div class="container" style="background-color:#f1f1f1">
+           <button type="button" class="signupbtn"> Sign Up </button>
+           
+           
+         <span><a href="#">Forgot password?</a> </span>
+         </div>
+       </form>
+      
+      </div>
+    <footer>
+      <p>Copyright @ Mahesh </p>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./login.js"></script>
+  </body>
+</html>
