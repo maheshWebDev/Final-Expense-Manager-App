@@ -8,11 +8,12 @@ async function loginUser(e){
         const password = document.getElementById('l-password').value;
 
         const dataObj = {email,password};
-        const responce = await axios.post('http://localhost:3000/user/login',dataObj);
-        console.log(responce);
-        alert(responce.data.message)
+        const response = await axios.post('http://localhost:3000/user/login',dataObj);
+        console.log(response);
+        alert(response.data.message)
        
     } catch (error) {
-        console.log(error)
+        console.log(error.response.data.message)
+       alert(error.response.data.message)
     }
 }

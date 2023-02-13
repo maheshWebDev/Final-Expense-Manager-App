@@ -11,8 +11,10 @@ async function registerUser(e){
         const dataObj = {name,email,password}
        const responce = await axios.post('http://localhost:3000/user/signup',dataObj);
         console.log(responce);
+        alert(responce.data.message)
 
     } catch (error) {
         console.log(error);
+        alert(error)
     }
 }
