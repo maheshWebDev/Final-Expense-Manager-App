@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="side-menu">
+        <div class="brand-name">
+            <h1 class="app-name">Expense Manager</h1>
+        </div>
+        <div class="profile_wrap">
+            <div class="profile_img">
+                <img src="Avatar.svg" alt="">
+            </div>
+            <div class="profile_info">
+                <h2 class="user-name">user</h2>
+                <button class="logout">Logout</button>
+            </div>
+        </div>
+       
+        <ul>
+            <li>
+               <button>Buy Premium</button>
+            </li>
+        </ul>
+    </div>
+   <!-- side -->
+   <div class="container">
+    <div class="content">
+        <div class="message-heading">
+
+            <h1 id="message">Manage Your Expense Fast And Easily</h1>
+        </div>
+        <div class="add-expense-form">
+              <form id="expense-form">
+                    <div class=" input-item"> 
+                     <input type="text" id="name" placeholder="Enter Expense Name" required>
+                    </div>
+                    <div class=" input-item"> 
+                        <input type="number" id="number" placeholder="Enter Amount" required>
+                  </div>
+                  <div class=" input-item">
+                    <select name="expense" id="option">
+                        <option value="rent">Rent</option>
+                        <option value="food">Food</option>
+                        <option value="emi">EMI</option>
+                        <option value="petrol">Petrol</option>
+                        <option value="other">Other</option>
+                      </select>
+                  </div>
+                  <div ><button type="submit" class="add-expense">Add Expense</button></div>
+                </form> 
+        </div>
+        <div class="content-2">
+            <div class="expense-table">
+    
+             <table id="table">
+                <tr>
+                    <th>Expense</th>
+                    <th>Amount</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                  </tr>
+
+                </table>
+            </div>
+        </div>
+    </div>
+ </div>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="dashboard.js"></script>
+</body>
+ </html>
+                 
+    
+      
+    
+       
+      
+  
+ 
+ 

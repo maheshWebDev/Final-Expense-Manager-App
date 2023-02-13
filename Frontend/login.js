@@ -11,6 +11,7 @@ async function loginUser(e){
         const response = await axios.post('http://localhost:3000/user/login',dataObj);
         console.log(response);
         alert(response.data.message)
+        window.location.replace("dashboard.html")
        
     } catch (error) {
         console.log(error.response.data.message)
