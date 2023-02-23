@@ -1,3 +1,7 @@
+const dotenv = require('dotenv');
+
+dotenv.config({path:'./config.env'});
+
 const express = require('express');
 
 const cors = require('cors');
@@ -24,7 +28,8 @@ app.use('/user',userRoute);
 
 app.use(expenseRoute)
 // db sync
-
+User.hasMany(Expense);
+Expense.belongsTo(User)
 db.sync().then().catch((err)=>{console.log(err)});
 
 app.listen(3000,()=>{
