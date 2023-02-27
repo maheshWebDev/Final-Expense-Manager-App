@@ -12,9 +12,13 @@ const User = require('./model/userModel');
 
 const Expense = require('./model/expenseModel')
 
+const Order = require('./model/orderModel')
+
 const userRoute = require('./router/userRoute');
 
 const expenseRoute = require('./router/expenseRoute')
+
+const buyPremiumRoute = require('./router/buyPremiumRoute')
 
 const app = express();
 
@@ -27,9 +31,17 @@ app.use(express.urlencoded({extended:true}));
 app.use('/user',userRoute);
 
 app.use(expenseRoute)
-// db sync
+
+app.use('/buy',buyPremiumRoute)
+
+// db associations
 User.hasMany(Expense);
-Expense.belongsTo(User)
+Expense.belongsTo(User);
+
+User.hasMany(Order);
+Order.belongsTo(User);
+
+// db sync
 db.sync().then().catch((err)=>{console.log(err)});
 
 app.listen(3000,()=>{
