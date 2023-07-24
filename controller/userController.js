@@ -4,11 +4,11 @@ const jwt = require('jsonwebtoken')
 
 const bcrypt =  require('bcrypt')
 
-function generateAccessToken(user) {
-    return jwt.sign({userId:user.dataValues.id},process.env.JWT_SECRET);
+function generateAccessToken(id,premium) {
+    return jwt.sign({userId:id, isPremium:premium},process.env.JWT_SECRET);
   }
 
-module.exports.registerUser = async(req,res)=>{
+const registerUser = async(req,res)=>{
     try {
         const {name,email,password} = req.body
         if(name == null || email == null || password == null){
@@ -34,7 +34,7 @@ module.exports.registerUser = async(req,res)=>{
     
 }
 
-module.exports.loginUser = async(req,res)=>{
+const loginUser = async(req,res)=>{
     try {
         const {email,password} = req.body
 
@@ -45,11 +45,18 @@ module.exports.loginUser = async(req,res)=>{
 
         if(!validPassword) return res.status(401).json({"message":"User not authorized"});
         
-        const token = generateAccessToken(user)
+        const token = generateAccessToken(user.dataValues.id,user.dataValues.ispremiumuser)
 
         res.status(200).json({"status":"success","message":"User login sucessful","token":token})
         
     } catch (error) {
         res.status(500).json({"status":"fail","message":"something went wrong"})
     }
+}
+
+
+module.exports = {
+    registerUser,
+    loginUser,
+    generateAccessToken
 }

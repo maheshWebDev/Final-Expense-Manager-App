@@ -7,6 +7,8 @@ document.getElementById('logout').addEventListener('click',()=>{
     window.location.replace("login.html")
 })
 
+
+
 async function sendExpense(e){
     e.preventDefault();
     try {
@@ -26,9 +28,28 @@ async function sendExpense(e){
     }
 }
 
+function parseJwt (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
+
 async function fetchExpense(){
     try {
         const token = localStorage.getItem("token")
+     let decodedToken = parseJwt(token);
+     let isPremium = decodedToken.isPremium
+     if(isPremium){
+        document.getElementById('p-btn').style.visibility="hidden";
+        document.getElementById('message').textContent = 'You are a premium user'
+        document.getElementById('side-btn').innerHTML = `<li><button id="l-board" class="btn" Onclick="showLeaderboard()"><i class="fa fa-download"></i> Leaderboard</button></li>
+        <li><button class="btn"><i class="fa fa-download"></i> Download</button></li>`
+}
+console.log(decodedToken)
         const response = await axios.get('http://localhost:3000/expenses',{headers: {'Authorization':token}});
         // console.log(response.data.data);
        showOnScreen(response.data.data)
@@ -86,15 +107,19 @@ document.getElementById('p-btn').addEventListener('click',async(e)=>{
             "key":response.data.key_id,
             "order_id":response.data.order.id,
             "handler": async function (response){
-                await axios.post('http://localhost:3000/buy/update-status',{
+              const res = await axios.post('http://localhost:3000/buy/update-status',{
                     order_id:options.order_id,
                     payment_id:response.razorpay_payment_id
                 },
                 {headers:{"Authorization":token}})
 
                 alert('you are a premium user now')
-                
-            
+                document.getElementById('p-btn').style.visibility="hidden";
+                document.getElementById('message').textContent = 'You are a premium user'
+                document.getElementById('side-btn').innerHTML = `<li><button id="l-board" class="btn" Onclick="showLeaderboard()"><i class="fa fa-download"></i> Leaderboard</button></li>
+                <li><button class="btn"><i class="fa fa-download"></i> Download</button></li>`
+                console.log(res)
+                localStorage.setItem('token',res.data.token)
                 
             },
         };
@@ -116,3 +141,35 @@ document.getElementById('p-btn').addEventListener('click',async(e)=>{
     }
 
 })
+
+// leaderboard
+// let leaderboardBtn = document.getElementById('l-board');
+
+// console.log(leaderboardBtn)
+
+async function showLeaderboard(){
+
+try {
+   const response = await axios.get('http://localhost:3000/premium/leaderboard');
+
+   console.log(response.data.data.result)
+   addDataToLeaderboard(response.data.data.result)
+
+} catch (error) {
+    console.log(error.response)
+}
+}
+
+function addDataToLeaderboard (arr){
+   const ele = document.getElementById('leaderboradone');
+   ele.style.display = 'block';
+    const parent = document.getElementById('leaderboard');
+    arr.forEach((obj)=>{
+        const child = `<div class="leaderboard-entry">    
+        <span class="name">${obj.name}</span>
+        <span class="amount">$${obj.totalAmount}</span>
+      </div>`
+      parent.innerHTML +=child;
+    })
+   
+}

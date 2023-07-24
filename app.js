@@ -20,6 +20,8 @@ const expenseRoute = require('./router/expenseRoute')
 
 const buyPremiumRoute = require('./router/buyPremiumRoute')
 
+const premiumRoute = require('./router/premiumRoute');
+
 const app = express();
 
 app.use(cors());
@@ -33,6 +35,8 @@ app.use('/user',userRoute);
 app.use(expenseRoute)
 
 app.use('/buy',buyPremiumRoute)
+
+app.use('/premium',premiumRoute);
 
 // db associations
 User.hasMany(Expense);
