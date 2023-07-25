@@ -18,15 +18,38 @@ try {
 
 module.exports.getExpense = async(req,res)=>{
     
-    try {
-        const expenses = await Expense.findAll({where:{userId:req.user.id}});
-      
-       
-        if(!expenses) return res.status(404).json({"status":"fail","message":"not found"});
 
-        res.status(200).json({"status":"success","data":expenses});
+    try {
+        const page = parseInt(req.query.page) || 1; 
+        const limit = parseInt(req.query.limit) || 10; 
+        
+        console.log(req.query.page)
+        const offset = (page - 1) * limit;
+        console.log(offset)
+
+        const expenses = await Expense.findAll({
+            where: { userId: req.user.id },
+            offset: offset,
+            limit: limit,
+        });
+
+        if (expenses.length === 0) return res.status(404).json({ "status": "fail", "message": "No expenses found." });
+
+       // Count the total number of expenses for pagination
+       const totalExpenses = await Expense.count({ where: { userId: req.user.id } });
+
+       const totalPages = Math.ceil(totalExpenses / limit);
+
+       res.status(200).json({
+           "status": "success",
+           "data": expenses,
+           "meta": {
+               "currentPage": page,
+               "totalPages": totalPages
+           }
+       });
     } catch (error) {
-        res.status(500).json({"status":"fail","message":"server error"});
+        res.status(500).json({ "status": "fail", "message": "Server error." });
     }
 }
 

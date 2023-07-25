@@ -56,20 +56,34 @@
                   <div ><button type="submit" class="add-expense">Add Expense</button></div>
                 </form> 
         </div>
-        <div class="content-2">
-            <div class="expense-table">
-    
-             <table id="table">
-                <tr>
-                    <th>Expense</th>
-                    <th>Amount</th>
-                    <th>Description</th>
-                    <th>Action</th>
-                  </tr>
+       
 
-                </table>
-            </div>
-        </div>
+
+<div class="content-2">
+    <div class="expense-table">
+      <table id="table">
+        <tr>
+          <th>Expense</th>
+          <th>Amount</th>
+          <th>Description</th>
+          <th>Action</th>
+        </tr>
+        <!-- Table rows with expense data will be added dynamically here -->
+      </table>
+    </div>
+  </div>
+  
+  <!-- Pagination section -->
+  <div class="pagination" id="pagination-controls">
+    <button id="prevPageBtn" onclick="handlePagination('prev')" disabled>Previous</button>
+    <span id="currentPage"></span>
+    <button id="nextPageBtn" onclick="handlePagination('next')" disabled>Next</button>
+   
+  </div>
+  
+  
+  
+
         <div class="leaderboradone" id="leaderboradone" style="display: none;">
             <div class="header">
               <h2>Leaderboard</h2>

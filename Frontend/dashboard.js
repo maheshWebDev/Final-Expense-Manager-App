@@ -1,7 +1,13 @@
 const addExpenseForm = document.getElementById('expense-form');
+
 addExpenseForm.addEventListener('submit',sendExpense);
 
-window.addEventListener('DOMContentLoaded',fetchExpense);
+
+
+window.addEventListener('DOMContentLoaded',()=>{
+    fetchExpense();
+    updatePaginationControls();
+});
 
 document.getElementById('logout').addEventListener('click',()=>{
     window.location.replace("login.html")
@@ -10,7 +16,7 @@ document.getElementById('logout').addEventListener('click',()=>{
 
 
 async function sendExpense(e){
-    e.preventDefault();
+    // e.preventDefault();
     try {
         const token =  localStorage.getItem("token")
         console.log(token)
@@ -23,7 +29,7 @@ async function sendExpense(e){
         const response = await axios.post('http://localhost:3000/expenses',dataObj,{headers: {'Authorization':token}});
         console.log(response)
     } catch (error) {
-        console.log(error.response)
+       
         alert(error.response.data.message)
     }
 }
@@ -38,40 +44,109 @@ function parseJwt (token) {
     return JSON.parse(jsonPayload);
 }
 
+// get expenses
+
+let currentPage = 1;
+let totalPages = 1;
+
 async function fetchExpense(){
+  
     try {
-        const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token")
      let decodedToken = parseJwt(token);
      let isPremium = decodedToken.isPremium
      if(isPremium){
-        document.getElementById('p-btn').style.visibility="hidden";
+        // document.getElementById('p-btn').style.visibility="hidden";
         document.getElementById('message').textContent = 'You are a premium user'
         document.getElementById('side-btn').innerHTML = `<li><button id="l-board" class="btn" Onclick="showLeaderboard()"><i class="fa fa-download"></i> Leaderboard</button></li>
         <li><button class="btn"><i class="fa fa-download"></i> Download</button></li>`
 }
-console.log(decodedToken)
-        const response = await axios.get('http://localhost:3000/expenses',{headers: {'Authorization':token}});
-        // console.log(response.data.data);
-       showOnScreen(response.data.data)
+        console.log(decodedToken)
+        console.log(currentPage)
+        const response = await axios.get(`http://localhost:3000/expenses?page=${currentPage}`, { headers: { 'Authorization': token } });
+        console.log(response)
+       
+        const data = response.data.data;
+        console.log(data)
+        showOnScreen(data);
+          
+        
+            // Update the pagination controls
+            
+            totalPages = response.data.meta.totalPages;
+            updatePaginationControls();
 
     } catch (error) {
-        console.log(error.response)
+        console.log(error)
     }
 
 }
 
-function showOnScreen(arr){
-const table = document.getElementById('table');
-arr.forEach((obj)=>{
-    const row = ` <tr id = ${obj.id}>
-    <td>${obj.name}</td>
-    <td>${obj.amount}</td>
-    <td>${obj.description}</td>
-    <td><button type="submit" Onclick="deleteExpense(${obj.id})" >X</button></td>
-    </tr>`
-table.innerHTML +=row
-})
-}
+
+// Call this function to update the pagination controls
+function updatePaginationControls() {
+    // Get references to the pagination elements
+    const prevPageBtn = document.getElementById('prevPageBtn');
+  const nextPageBtn = document.getElementById('nextPageBtn');
+  const currentPageSpan = document.getElementById('currentPage');
+    
+  console.log("Current Page (Controls):", currentPageSpan);
+  console.log("Total Pages:", totalPages);
+  console.log("Prev Button:", prevPageBtn);
+  console.log("Next Button:", nextPageBtn);
+  
+  console.log("Current Page:", currentPage);
+  console.log("Total Pages:", totalPages);
+    // Update the current page element
+    currentPageSpan.textContent = `Page ${currentPage}`;
+    console.log("currentPageSpan style:", currentPageSpan.style);
+    // Enable or disable the "Previous" and "Next" buttons based on the current page
+    if (prevPageBtn) {
+        // The element exists, so you can safely modify its properties
+        prevPageBtn.disabled = currentPage === 1;
+      }
+    // prevPageBtn.disabled = currentPage === 1;
+    if(nextPageBtn){
+        nextPageBtn.disabled = currentPage === totalPages;
+    }
+   
+  }
+  
+  // Call this function when the "Previous" or "Next" button is clicked
+  async function handlePagination(action) {
+    if (action === 'prev' && currentPage > 1) {
+      currentPage--;
+     
+      console.log("handlePagination called with action:", action);
+      await fetchExpense(); // Fetch expenses for the new page
+      console.log("Current Page (Prev):", currentPage);
+    } else if (action === 'next' && currentPage < totalPages) {
+      currentPage++;
+      
+      console.log("handlePagination called with action:", action);
+      await fetchExpense(); // Fetch expenses for the new page
+      
+      console.log("Current Page (Next):", currentPage);
+    }
+  }
+
+
+  function showOnScreen(arr) {
+    const table = document.getElementById('table');
+    
+    // Clear existing content in the table
+    table.innerHTML = '';
+  
+    arr.forEach((obj) => {
+      const row = ` <tr id=${obj.id}>
+        <td>${obj.name}</td>
+        <td>${obj.amount}</td>
+        <td>${obj.description}</td>
+        <td><button type="submit" onclick="deleteExpense(${obj.id})">X</button></td>
+      </tr>`;
+      table.innerHTML += row;
+    });
+  }
 
 async function deleteExpense(id){
     try {
@@ -79,8 +154,10 @@ async function deleteExpense(id){
         const response = await axios.delete(`http://localhost:3000/expenses/${id}`,{headers: {'Authorization':token}})
         console.log(response)
         if(response.status == 200){
+            
             const parent = document.getElementById(id)
             parent.remove();
+            updatePaginationControls()
         }
         
         
@@ -173,3 +250,10 @@ function addDataToLeaderboard (arr){
     })
    
 }
+
+
+
+
+
+
+
